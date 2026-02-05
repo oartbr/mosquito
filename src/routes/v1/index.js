@@ -1,5 +1,6 @@
 const express = require('express');
 const doorRoute = require('./door.route');
+const doorAblyRoute = require('./door-ably.route');
 const config = require('../../config/config');
 const logger = require('../../config/logger');
 
@@ -9,6 +10,10 @@ const defaultRoutes = [
   {
     path: '/doors',
     route: doorRoute,
+  },
+  {
+    path: '/door-ably',
+    route: doorAblyRoute,
   },
 ];
 
