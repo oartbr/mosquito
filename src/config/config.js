@@ -28,6 +28,11 @@ const envVarsSchema = Joi.object()
     MQTT_DOOR_IDS: Joi.string()
       .optional()
       .description('Comma-separated door IDs'),
+    ABLY_API_KEY: Joi.string().optional().description('Ably API key'),
+    ABLY_CHANNEL: Joi.string().optional().description('Ably channel name'),
+    ABLY_DOOR_IDS: Joi.string()
+      .optional()
+      .description('Comma-separated door IDs for Ably'),
   })
   .unknown();
 
@@ -42,6 +47,11 @@ if (error) {
 logger.info(`NODE_ENV: ${envVars.NODE_ENV}`);
 
 const doorIds = (envVars.MQTT_DOOR_IDS || '')
+  .split(',')
+  .map((value) => value.trim())
+  .filter(Boolean);
+
+const ablyDoorIds = (envVars.ABLY_DOOR_IDS || '')
   .split(',')
   .map((value) => value.trim())
   .filter(Boolean);
@@ -63,5 +73,10 @@ module.exports = {
     topicPrefix: envVars.MQTT_TOPIC_PREFIX,
     qos: envVars.MQTT_QOS,
     doorIds,
+  },
+  ably: {
+    apiKey: envVars.ABLY_API_KEY,
+    channel: envVars.ABLY_CHANNEL,
+    doorIds: ablyDoorIds,
   },
 };
